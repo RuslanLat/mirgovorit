@@ -1,0 +1,48 @@
+{% extends "admin/master.html" %}
+
+{% block body %}
+
+<h4>Рецепты, в которых указанный продукт отсутствует,<br>
+  или присутствует в количестве меньше 10 грамм</h4>
+
+<form action="/admin">
+  <div class="form-group">
+    <label for="product_id">ID продукта</label>
+    <input type="text" class="form-control" id="product_id" name="product_id" aria-describedby="product_id"
+      placeholder="1">
+    <small id="product_id" class="form-text text-muted">введите id продукта - целое число</small>
+  </div>
+  <button type="submit" class="btn btn-primary">Поиск</button>
+</form>
+
+{% if recipes %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"># ID</th>
+      <th scope="col">ID рецепта</th>
+      <th scope="col">Наименование рецепта</th>
+      <th scope="col">ID продукта</th>
+      <th scope="col">Наименование продукта</th>
+      <th scope="col">Количество</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for recipe in recipes %}
+    <tr>
+      <th scope="row">{{recipe.id}}</th>
+      <td>{{recipe.recipe_id}}</td>
+      <td>{{recipe.recipe.title}}</td>
+      <td>{{recipe.product_id}}</td>
+      <td>{{recipe.product.title}}</td>
+      <td>{{recipe.quantity}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<h2>Таких рецептов нет</h2>
+{% endif %}
+
+
+{% endblock %}

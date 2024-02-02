@@ -1,0 +1,4 @@
+FLASK_ADMIN_SWATCH: cosmo
+SQLALCHEMY_DATABASE_URI: postgresql://mirgovorit:mirgovorit@db:5432/cookbook
+SECRET_KEY: development key
+BABEL_DEFAULT_LOCALE: ru

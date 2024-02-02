@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>{{title}}</title>
+</head>
+
+<body>
+ <h2>Рецепты, в которых указанный продукт отсутствует,<br>
+  или присутствует в количестве меньше 10 грамм</h2>
+  {% if recipes %}
+  <table border="1">
+   <caption>Рецепты</caption>
+   <tr>
+    <th>ID</th>
+    <th>Наименование рецепта</th>
+    <th>ID продукта</th>
+    <th>Наименование продукта</th>
+    <th>Количество, грамм</th>
+   </tr>
+   {% for recipe in recipes %}
+   <tr><td>{{recipe.recipe_id}}</td><td>{{recipe.title}}</td><td>{{recipe.product.product_id}}</td><td>{{recipe.product.title}}</td><td>{{recipe.quantity}}</td>
+   {% endfor %}
+  </table>
+ {% else %}
+ <p>Таких рецептов нет</p>
+ {% endif %}
+</body>
+
+</html>

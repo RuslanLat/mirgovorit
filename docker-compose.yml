@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:13.3
+    environment:
+      - POSTGRES_DB=cookbook
+      - POSTGRES_USER=mirgovorit
+      - POSTGRES_PASSWORD=mirgovorit
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - .:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U mirgovorit -d cookbook" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - deploy_network
+
+  api:
+    build:
+      context: ./cookbook
+      dockerfile: Dockerfile
+    command: bash -c "python -m alembic upgrade head && python main.py"
+    volumes:
+      - ./cookbook:/app
+    ports:
+      - 8080:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - deploy_network
+
+  admin:
+    build:
+      context: ./adminpanel
+      dockerfile: Dockerfile
+    volumes:
+      - ./adminpanel:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    networks:
+      - deploy_network
+
+volumes:
+  pgdata:
+
+
+networks:
+  deploy_network:
+    driver: bridge
